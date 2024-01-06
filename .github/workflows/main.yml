@@ -40,7 +40,18 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: rif281/simple_java:${{ env.new_version }}
+    - name: Commit updated pom.xml
+      run: |
+        # git config --global user.name 'Your Name'
+        git config --global user.email 'rif281@gmail.com'
+        git commit -am "Update version to ${{ env.new_version }}"
 
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+  
     # # Push the Docker image
     # - name: Push Image
     #   run: |
