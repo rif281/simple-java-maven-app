@@ -1,15 +1,16 @@
-provider "aws" {
-  region     = "us-east-1"
-  access_key = "your_access_key"
-  secret_key = "your_secret_key"
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
 }
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+provider "aws" {
+  region     = "us-east-1"
+  access_key = ${{ secrets.AWS_ACCESS_KEY_ID }}
+  secret_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 }
 
 resource "aws_instance" "for_simple_java_project" {
