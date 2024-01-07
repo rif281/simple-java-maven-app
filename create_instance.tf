@@ -16,11 +16,10 @@ resource "aws_instance" "for_simple_java_project" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = ["sg-0a488b17830c73da9"]
   
-  provisioner "remote-exec" {
-    inline = [
-      "sudo docker run rif281/simple_java"
-    ]
-  }
+  user_data = <<-EOF
+                #!/bin/bash
+                sudo docker run rif281/simple_java
+                EOF
 
   tags = {
     Name = "for_simple_java_project"
