@@ -1,14 +1,14 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline # Workflow name
 
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+  workflow_dispatch: # Allows the workflow to be manually triggered
 
 jobs:
-  build-and-push:
+  build-and-push: # Job name
     runs-on: ubuntu-latest
-    env:
+    env: # Set env variables for Terraform condiguration file 
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
@@ -22,11 +22,12 @@ jobs:
           -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} \
           versions:commit
 
+        # Save 'new_version' to current runner's environment
         echo "new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
-    # Build and push Docker image
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+    # # Build and push Docker image
+    # - name: Set up Docker Buildx
+    #   uses: docker/setup-buildx-action@v1
 
     # Login to Docker Hub
     - name: Login to Docker Hub
