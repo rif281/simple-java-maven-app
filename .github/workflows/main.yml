@@ -54,8 +54,8 @@ jobs:
           sudo tee /etc/apt/sources.list.d/hashicorp.list
         sudo apt update && sudo apt-get install terraform
 
-        terraform destroy
         terraform init 
+        terraform destroy
         terraform apply -auto-approve
     
     - name: Commit updated pom.xml
