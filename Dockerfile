@@ -6,15 +6,17 @@ WORKDIR /app
 COPY . .
 
 # Package the application
+RUN mvn clean
 RUN mvn validate 
 RUN mvn test
-RUN mvn clean package
+RUN mvn package
 
 # Stage 2: Create the final runtime image
 FROM openjdk:11-jre-slim
 
 # Copy the built artifact from the build stage
-COPY --from=build /app/target/my-app-*.jar ./my-app.jar
+COPY --from=build /app/target/ /app/
 
 # Run the application
-ENTRYPOINT ["java","-jar","./my-app.jar"]
+ENTRYPOINT java -jar $(find /app -name 'my-app-*.jar')
+
