@@ -22,12 +22,8 @@ jobs:
           -DnewVersion=\${parsedVersion.majorVersion}.\${parsedVersion.minorVersion}.\${parsedVersion.nextIncrementalVersion} \
           versions:commit
 
-        # Save 'new_version' to current runner's environment
+        # Save 'new_version' to current runner's environment file (GITHUB_ENV)
         echo "new_version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-
-    # # Build and push Docker image
-    # - name: Set up Docker Buildx
-    #   uses: docker/setup-buildx-action@v1
 
     # Login to Docker Hub
     - name: Login to Docker Hub
@@ -56,7 +52,7 @@ jobs:
         sudo apt update && sudo apt-get install terraform
 
         terraform init 
-        terraform destroy
+        terraform destroy -target aws_instance.for_simple_java_project
         terraform apply -auto-approve
     
     - name: Commit updated pom.xml
