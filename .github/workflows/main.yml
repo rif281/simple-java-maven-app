@@ -41,7 +41,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: rif281/simple_java:${{ env.new_version }}
+        tags: rif281/simple_java:${{ env.new_version }},rif281/simple_java:latest
 
     - name: Terraform
       run: |
